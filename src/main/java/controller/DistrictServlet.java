@@ -12,10 +12,42 @@ import java.util.List;
 @WebServlet("/district")
 public class DistrictServlet extends HttpServlet {
 
-    private DistrictDAO dao = new DistrictDAO();
+    private final DistrictDAO dao = new DistrictDAO();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        handleActions(request, response);
+
+        List<District> districts = dao.findAll();
+        request.setAttribute("districts", districts);
+
+        request.getRequestDispatcher("/views/district.jsp")
+                .forward(request, response);
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        District d = buildDistrict(request);
+
+        String id = request.getParameter("id");
+
+        try {
+            if (id != null && !id.isEmpty()) {
+                d.setId(Long.parseLong(id));
+                dao.update(d);
+            } else {
+                dao.insert(d);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        response.sendRedirect("district");
+    }
+
+    private void handleActions(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String deleteId = request.getParameter("deleteId");
         String editId = request.getParameter("editId");
@@ -30,7 +62,8 @@ public class DistrictServlet extends HttpServlet {
             if (editId != null) {
                 District edit = dao.findAll().stream()
                         .filter(d -> d.getId().equals(Long.parseLong(editId)))
-                        .findFirst().orElse(null);
+                        .findFirst()
+                        .orElse(null);
 
                 request.setAttribute("editDistrict", edit);
             }
@@ -38,38 +71,15 @@ public class DistrictServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        List<District> districts = dao.findAll();
-        request.setAttribute("districts", districts);
-
-        request.getRequestDispatcher("/views/district.jsp")
-                .forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String id = request.getParameter("id");
-
-        District d = new District(
+    private District buildDistrict(HttpServletRequest request) {
+        return new District(
                 request.getParameter("name"),
                 request.getParameter("area"),
                 request.getParameter("adminCenter"),
                 request.getParameter("head"),
                 null
         );
-
-        try {
-            if (id != null && !id.isEmpty()) {
-                d.setId(Long.parseLong(id));
-                dao.update(d);
-            } else {
-                dao.insert(d);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        response.sendRedirect("district");
     }
 }
