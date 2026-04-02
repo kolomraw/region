@@ -11,7 +11,6 @@ public class DistrictDAO {
     public List<District> findAll() {
 
         List<District> list = new ArrayList<>();
-
         String sql = "SELECT * FROM districts";
 
         try (Connection con = DBConnection.getConnection();
@@ -46,6 +45,41 @@ public class DistrictDAO {
             ps.setString(2, d.getArea());
             ps.setString(3, d.getAdminCenter());
             ps.setString(4, d.getHead());
+
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(Long id) {
+
+        String sql = "DELETE FROM districts WHERE id=?";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setLong(1, id);
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void update(District d) {
+
+        String sql = "UPDATE districts SET name=?, area=?, admincenter=?, head=? WHERE id=?";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, d.getName());
+            ps.setString(2, d.getArea());
+            ps.setString(3, d.getAdminCenter());
+            ps.setString(4, d.getHead());
+            ps.setLong(5, d.getId());
 
             ps.executeUpdate();
 
