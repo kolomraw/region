@@ -25,10 +25,10 @@
 
 <ul class="list-group list-group-flush">
 <li class="list-group-item list-group-item-primary">
-    <a href="#">Области</a>
+    <a href="region">Области</a>
 </li>
 <li class="list-group-item list-group-item-info">
-    <a href="#">Районы</a>
+    <a href="district">Районы</a>
 </li>
 </ul>
 

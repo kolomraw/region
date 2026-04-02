@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @WebServlet("/district")
 public class DistrictServlet extends HttpServlet {
@@ -21,14 +20,8 @@ public class DistrictServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.setContentType("text/html");
-        PrintWriter writer = response.getWriter();
-
-        try {
-            writer.println("<h2>Привет DistrictServlet</h2>");
-        } finally {
-            writer.close();
-        }
+        request.getRequestDispatcher("/views/district.jsp")
+                .forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

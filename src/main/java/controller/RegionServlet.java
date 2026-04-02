@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @WebServlet("/region")
 public class RegionServlet extends HttpServlet {
@@ -21,14 +20,8 @@ public class RegionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.setContentType("text/html");
-        PrintWriter writer = response.getWriter();
-
-        try {
-            writer.println("<h2>Привет RegionServlet</h2>");
-        } finally {
-            writer.close();
-        }
+        request.getRequestDispatcher("/views/region.jsp")
+                .forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
