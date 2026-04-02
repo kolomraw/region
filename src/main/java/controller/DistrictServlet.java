@@ -1,24 +1,29 @@
 package controller;
 
+import dao.DBConnection;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 
 import java.io.IOException;
+import java.sql.Connection;
 
 @WebServlet("/district")
 public class DistrictServlet extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
-
-    public DistrictServlet() {
-        super();
-    }
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        try {
+            Connection con = DBConnection.getConnection();
+
+            if (con != null && !con.isClosed()) {
+                System.out.println("DB OK");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         request.getRequestDispatcher("/views/district.jsp")
                 .forward(request, response);

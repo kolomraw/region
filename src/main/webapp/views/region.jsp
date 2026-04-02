@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
+<%@ page import="java.util.List"%>
 <%@ page import="domain.Region"%>
+<%@ page import="dao.RegionDAO"%>
 
 <%
-Region r1 = new Region(1L, "Минская область", "40000", "Минск", "Иванов");
-Region r2 = new Region(2L, "Гродненская область", "25000", "Гродно", "Петров");
-Region[] regions = new Region[]{r1, r2};
+RegionDAO dao = new RegionDAO();
+List<Region> regions = dao.findAll();
 %>
 
 <!DOCTYPE html>
@@ -22,16 +23,9 @@ Region[] regions = new Region[]{r1, r2};
     padding: 20px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
-
-.table thead {
-    background-color: #f1f3f5;
-}
-
-body {
-    background-color: #f8f9fa;
-}
+.table thead { background-color: #f1f3f5; }
+body { background-color: #f8f9fa; }
 </style>
-
 </head>
 
 <body>
@@ -84,14 +78,12 @@ for (Region r : regions) {
 <h4 class="mb-3">Новая область</h4>
 
 <form method="POST">
-
-<input type="text" name="name" placeholder="Название" class="form-control mb-2">
-<input type="text" name="area" placeholder="Площадь" class="form-control mb-2">
-<input type="text" name="adminCenter" placeholder="Адм. центр" class="form-control mb-2">
-<input type="text" name="head" placeholder="Глава" class="form-control mb-3">
+<input type="text" name="name" class="form-control mb-2" placeholder="Название">
+<input type="text" name="area" class="form-control mb-2" placeholder="Площадь">
+<input type="text" name="adminCenter" class="form-control mb-2" placeholder="Адм. центр">
+<input type="text" name="head" class="form-control mb-3" placeholder="Глава">
 
 <button type="submit" class="btn btn-primary w-100">Добавить</button>
-
 </form>
 
 </div>
